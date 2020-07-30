@@ -1,17 +1,64 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+interface HeaderProps {
+   name: string;
+}
+interface ContentProps {
+   name: string;
+   exerciseCount: number;
+}
+interface TotalProps {
+   total: number;
+}
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const Header: React.FC<HeaderProps> = (props) => {
+   return <h1>{props.name}</h1>;
+};
+
+const Content: React.FC<ContentProps> = ({ name, exerciseCount }) => {
+   return (
+      <p>
+         {name} {exerciseCount}
+      </p>
+   );
+};
+
+const Total: React.FC<TotalProps> = ({ total }) => {
+   return <p>Number of exercises: {total}</p>;
+};
+
+const App: React.FC = () => {
+   const courseName = "Half Stack application development";
+   const courseParts = [
+      {
+         name: "Fundamentals",
+         exerciseCount: 10,
+      },
+      {
+         name: "Using props to pass data",
+         exerciseCount: 7,
+      },
+      {
+         name: "Deeper type usage",
+         exerciseCount: 14,
+      },
+   ];
+
+   return (
+      <div>
+         <Header name={courseName} />
+         {courseParts.map((course) => (
+            <Content name={course.name} exerciseCount={course.exerciseCount} />
+         ))}
+         <Total
+            total={courseParts.reduce(
+               (carry, part) => carry + part.exerciseCount,
+               0
+            )}
+         />
+      </div>
+   );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
