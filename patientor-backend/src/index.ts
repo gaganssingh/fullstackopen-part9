@@ -1,21 +1,21 @@
 import express from "express";
+import diagnosisRouter from "./routes/diagnosis";
+import patientRouter from "./routes/patient";
 import cors from "cors";
-
-// import pingRouter from "./routes/pingRouter";
-import diagnosesRouter from "../routes/diagnosesRouter";
-
 const app = express();
+app.use(cors());
+app.use(express.json());
 
-app.use(express.json()); // Body parser
-app.use(cors()); // Enable cors requests
+const PORT = process.env.PORT || 3001;
 
-// Routes
 app.get("/api/ping", (_req, res) => {
    console.log("someone pinged here");
-   res.send("Patientor Backend");
+   res.send("pong");
 });
 
-app.use("/api/diagnosis", diagnosesRouter);
+app.use("/api/diagnosis", diagnosisRouter);
+app.use("/api/patients", patientRouter);
 
-const PORT = 3001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+   console.log(`Server running on port ${PORT}`);
+});
